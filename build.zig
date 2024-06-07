@@ -21,7 +21,6 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    lib.root_module.addOptions("build_options", build_options);
     lib.linkLibC();
     lib.installHeader(termbox2_c.path("termbox2.h"), "termbox2.h");
     b.installArtifact(lib);
@@ -32,7 +31,7 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     module.addOptions("build_options", build_options);
-    module.addIncludePath(termbox2_c.path(""));
+    module.linkLibrary(lib);
 
     const lib_unit_tests = b.addTest(.{
         .root_source_file = b.path("src/tests.zig"),
