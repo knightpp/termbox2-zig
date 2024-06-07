@@ -1,0 +1,21 @@
+.{
+    .name = "termbox2-zig",
+    .version = "0.0.0",
+
+    .minimum_zig_version = "0.12.0",
+
+    .dependencies = .{
+        .termbox2 = .{
+            .url = "https://github.com/knightpp/termbox2/archive/refs/heads/fix-zig.tar.gz",
+            .hash = "12206fcf95eba42a2fd5917d578b0160633000f1f70b2f4cc593158e38d8ab9a767a",
+        },
+    },
+
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        "LICENSE",
+        "README.md",
+    },
+}
