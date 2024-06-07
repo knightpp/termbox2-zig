@@ -31,8 +31,9 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    module.addOptions("build_options", build_options);
-    module.addIncludePath(termbox2_c.path(""));
+    // module.addOptions("build_options", build_options);
+    // module.addIncludePath(termbox2_c.path(""));
+    module.linkLibrary(lib);
 
     const lib_unit_tests = b.addTest(.{
         .root_source_file = b.path("src/tests.zig"),
