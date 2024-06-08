@@ -1,11 +1,18 @@
 const std = @import("std");
 
+const AttrWidthOpt = enum(u8) {
+    default = 0,
+    @"16" = 16,
+    @"32" = 32,
+    @"64" = 64,
+};
+
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
     const build_options = b.addOptions();
-    build_options.addOption(i32, "attr_w", b.option(i32, "attr_w", "integer width of fg and bg attributes") orelse 0);
+    build_options.addOption(AttrWidthOpt, "attr_w", b.option(AttrWidthOpt, "attr_w", "integer width of fg and bg attributes") orelse .default);
     build_options.addOption(bool, "egc", b.option(bool, "egc", "enable extended grapheme cluster support") orelse false);
     build_options.addOption(usize, "printf_buf", b.option(usize, "printf_buf", "buffer size for printf operations") orelse 0);
     build_options.addOption(usize, "read_buf", b.option(usize, "read_buf", "buffer size for tty reads") orelse 0);
@@ -38,6 +45,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    lib_unit_tests.root_module.addOptions("build_options", build_options);
     lib_unit_tests.linkLibrary(lib);
 
     const test_step = b.step("test", "Run unit tests");

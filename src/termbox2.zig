@@ -1,8 +1,8 @@
 const opts = @import("build_options");
 pub const c = @cImport({
     @cDefine("TB_IMPL", {});
-    if (opts.attr_w != 0) {
-        @cDefine("TB_OPT_ATTR_W", std.fmt.comptimePrint("{}", .{opts.attr_w}));
+    if (opts.attr_w != .default) {
+        @cDefine("TB_OPT_ATTR_W", std.fmt.comptimePrint("{}", .{@intFromEnum(opts.attr_w)}));
     }
     if (opts.egc) {
         @cDefine("TB_OPT_EGC", {});
