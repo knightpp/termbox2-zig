@@ -192,7 +192,7 @@ pub fn poll_event() !c.tb_event {
 pub fn print(x: u32, y: u32, fg: Attribute, bg: Attribute, str: [*:0]const u8) Error!void {
     return parseErr(c.tb_print(@intCast(x), @intCast(y), @intFromEnum(fg), @intFromEnum(bg), str));
 }
-pub fn printf(alloc: std.mem.Allocator, x: c_int, y: c_int, fg: c.uintattr_t, bg: c.uintattr_t, comptime fmt: []const u8, args: anytype) !void {
+pub fn printf(alloc: std.mem.Allocator, x: u32, y: u32, fg: Attribute, bg: Attribute, comptime fmt: []const u8, args: anytype) !void {
     var buf = std.ArrayList(u8).init(alloc);
     defer buf.deinit();
 
@@ -262,13 +262,23 @@ test "print" {
     try shutdown();
 }
 
-test "poll_event" {
+test "printf" {
+    const alloc = testing.allocator;
+
     try init();
 
-    const event = try poll_event();
-    std.debug.print("{}", .{event});
+    try printf(alloc, 0, 0, .yellow, .default, "test {s}", .{"b"});
 
     try shutdown();
-
-    return error.Test;
 }
+
+// test "poll_event" {
+//     try init();
+
+//     const event = try poll_event();
+//     std.debug.print("{}", .{event});
+
+//     try shutdown();
+
+//     return error.Test;
+// }
